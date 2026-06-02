@@ -30,6 +30,7 @@
 
         askBtn.addEventListener('click', async () => {
             const text = userInput.value.trim();
+            console.log('发送的文本:', text);
             if (!text) return;
 
             resultArea.innerText = '思考中...';
