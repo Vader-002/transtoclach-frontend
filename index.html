@@ -4,33 +4,67 @@
     <meta charset="UTF-8">
     <title>我的AI网站</title>
     <style>
-        body { font-family: Arial; max-width: 600px; margin: 50px auto; padding: 20px; }
-        textarea { width: 100%; padding: 10px; font-size: 16px; }
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .flex-row {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .input-area {
+            flex: 2;
+            min-width: 200px;
+        }
+        .reward-area {
+            flex: 1;
+            text-align: center;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 16px;
+            align-self: center;
+        }
+        textarea { width: 100%; padding: 10px; font-size: 16px; box-sizing: border-box; }
         button { margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
         .result { margin-top: 20px; border-left: 4px solid #007bff; padding-left: 15px; }
+        .reward-area img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        @media (max-width: 600px) {
+            .flex-row { flex-direction: column; }
+            .reward-area { align-self: stretch; }
+        }
     </style>
 </head>
 <body>
     <h1>🙋‍♂️口语转为文言文👨‍🏫</h1>
-    <textarea id="userInput" rows="5" placeholder="在这里输入口语...（最多200字）"maxlength="200"></textarea>
-    <div>已输入 <span id="charCount">0</span> / 200 字</div>
-    <br>
-    <button id="askBtn">问AI</button>
+    
+    <div class="flex-row">
+        <div class="input-area">
+            <textarea id="userInput" rows="5" placeholder="在这里输入口语...（最多200字）" maxlength="200"></textarea>
+            <div>已输入 <span id="charCount">0</span> / 200 字</div>
+            <button id="askBtn">问AI</button>
+        </div>
+        <div class="reward-area">
+            <p style="color: #666; font-size: 14px; margin: 0 0 8px 0;">如果帮助到您，可以奖赏几块钱我吃蚕豆🫘，这完全自愿，取决于您是否愿意。</p>
+            <img src="reward.png" alt="赞赏码" onclick="alert('感谢支持！扫码即可赞赏')">
+            <div style="font-size: 12px; color: #999; margin-top: 10px;">⚠️ 本内容由DeepSeek AI生成，仅供参考。请勿输入违反法律和公序良俗的内容。</div>
+        </div>
+    </div>
+
     <div class="result" id="resultArea">文显乎此</div>
-    <div style="text-align: center; margin-top: 30px; padding: 15px 0; border-top: 1px solid #eee;">
-    <p style="color: #666; font-size: 14px;">如果帮助到您，可以奖赏几块钱我吃蚕豆🫘，这完全自愿，取决于您是否愿意。</p>
-    <img src="reward.png" alt="赞赏码" style="width: 150px; height: auto; cursor: pointer;" 
-         onclick="alert('感谢支持！扫码即可赞赏')">
-    <div style="font-size: 12px; color: #999; margin-top: 10px;">⚠️ 本内容由DeepSeek AI生成，仅供参考。请勿输入违反法律和公序良俗的内容。</div>
 
     <script>
         const askBtn = document.getElementById('askBtn');
         const userInput = document.getElementById('userInput');
         const charCount = document.getElementById('charCount');
+        const resultArea = document.getElementById('resultArea');
 
         userInput.addEventListener('input', () => {
-        const len = userInput.value.length;
-        charCount.textContent = len;
+            const len = userInput.value.length;
+            charCount.textContent = len;
         });
 
         askBtn.addEventListener('click', async () => {
