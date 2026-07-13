@@ -37,7 +37,13 @@ export async function onRequest(context) {
         const data = await response.json();
         const aiAnswer = data.choices?.[0]?.message?.content || 'AI生成失败，请重试。';
 
-        // 5️⃣ 返回结果给前端
+        // 5️⃣ 【新增】将数据写入 D1 数据库
+        const db = context.env.DB;  // 这里的 DB 必须和你在 Cloudflare 绑定的变量名一致
+        await db.prepare(
+            'INSERT INTO conversion_logs (user_input, ai_output) VALUES (?, ?)'
+        ).bind(question, aiAnswer).run();
+
+        // 6️⃣ 返回结果给前端
         return new Response(JSON.stringify({ answer: aiAnswer }), {
             headers: { 'Content-Type': 'application/json' }
         });
